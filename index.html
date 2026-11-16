@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#2563eb">
+  <title>MinhaGrade & Provas</title>
+  <link rel="manifest" href="manifest.json">
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --bg: #f1f5f9;
+      --card: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+      --danger: #ef4444;
+      --success: #16a34a;
+    }
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+    
+    body { background: var(--bg); color: var(--text); padding-bottom: 40px; }
+    
+    header {
+      background: var(--primary);
+      color: white;
+      padding: 20px 16px;
+      text-align: center;
+    }
+    header h1 { font-size: 1.5rem; }
+    header p { font-size: 0.85rem; opacity: 0.9; }
+    
+    .tabs {
+      display: flex;
+      background: var(--card);
+      border-bottom: 1px solid #e2e8f0;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    
+    .tab-btn {
+      flex: 1;
+      padding: 14px 8px;
+      border: none;
+      background: none;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+    }
+    .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
+    
+    main { max-width: 600px; margin: 16px auto; padding: 0 12px; }
+    
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    
+    .card {
+      background: var(--card);
+      padding: 16px;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      margin-bottom: 16px;
+    }
+    .card h2 { font-size: 1.1rem; margin-bottom: 12px; }
+    
+    form { display: flex; flex-direction: column; gap: 10px; }
+    .row { display: flex; gap: 8px; }
+    .row > * { flex: 1; min-width: 0; }
+    
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 0.95rem;
+    }
+    
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-primary:hover { background: var(--primary-dark); }
+    
+    .item {
+      background: var(--card);
+      padding: 14px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-left: 4px solid var(--primary);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+    .item.concluido { opacity: 0.6; text-decoration: line-through; border-left-color: var(--success); }
+    .item small { color: var(--muted); display: block; margin-top: 2px; }
+    
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 99px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: #dbeafe;
+      color: var(--primary);
+      margin-top: 4px;
+    }
+    
+    .acoes { display: flex; gap: 6px; }
+    .btn-icon {
+      border: none;
+      padding: 8px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .btn-check { background: #dcfce7; color: var(--success); }
+    .btn-del { background: #fee2e2; color: var(--danger); }
+    
+    footer { text-align: center; margin-top: 24px; }
+    .btn-sec {
+      background: white;
+      border: 1px solid #cbd5e1;
+      padding: 8px 16px;
+      border-radius: 8px;
+      color: var(--muted);
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>MinhaGrade</h1>
+    <p>Organizador Escolar Offline</p>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab-btn active" data-tab="provas">Provas & Tarefas</button>
+    <button class="tab-btn" data-tab="grade">Grade Horária</button>
+    <button class="tab-btn" data-tab="notas">Médias</button>
+  </nav>
+
+  <main>
+    <!-- ABA 1: PROVAS E TAREFAS -->
+    <section id="provas" class="tab-content active">
+      <div class="card">
+        <h2>Nova Prova ou Tarefa</h2>
+        <form id="form-tarefa">
+          <input type="text" id="tarefa-titulo" placeholder="Ex: Prova de Matemática (Funções)" required>
+          <div class="row">
+            <input type="text" id="tarefa-materia" placeholder="Matéria" required>
+            <input type="date" id="tarefa-data" required>
+          </div>
+          <button type="submit" class="btn-primary">Adicionar</button>
+        </form>
+      </div>
+      <div id="lista-tarefas" class="lista"></div>
+    </section>
+
+    <!-- ABA 2: GRADE HORÁRIA -->
+    <section id="grade" class="tab-content">
+      <div class="card">
+        <h2>Adicionar Aula na Grade</h2>
+        <form id="form-aula">
+          <div class="row">
+            <select id="aula-dia" required>
+              <option value="Segunda">Segunda-feira</option>
+              <option value="Terça">Terça-feira</option>
+              <option value="Quarta">Quarta-feira</option>
+              <option value="Quinta">Quinta-feira</option>
+              <option value="Sexta">Sexta-feira</option>
+            </select>
+            <input type="time" id="aula-hora" required>
+          </div>
+          <div class="row">
+            <input type="text" id="aula-materia" placeholder="Matéria (Ex: História)" required>
+            <input type="text" id="aula-prof" placeholder="Professor(a)">
+          </div>
+          <button type="submit" class="btn-primary">Salvar Horário</button>
+        </form>
+      </div>
+      <div id="lista-grade" class="lista"></div>
+    </section>
+
+    <!-- ABA 3: CALCULADORA DE MÉDIAS -->
+    <section id="notas" class="tab-content">
+      <div class="card">
+        <h2>Simulador de Notas (Média: 6,0)</h2>
+        <form id="form-nota">
+          <input type="text" id="nota-materia" placeholder="Nome da Matéria" required>
+          <div class="row">
+            <input type="number" id="nota-1" step="0.1" min="0" max="10" placeholder="Nota 1" required>
+            <input type="number" id="nota-2" step="0.1" min="0" max="10" placeholder="Nota 2">
+            <input type="number" id="nota-3" step="0.1" min="0" max="10" placeholder="Nota 3">
+          </div>
+          <button type="submit" class="btn-primary">Calcular & Salvar</button>
+        </form>
+      </div>
+      <div id="lista-notas" class="lista"></div>
+    </section>
+  </main>
+
+  <footer>
+    <button id="btn-exportar" class="btn-sec">Exportar Backup (.json)</button>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
