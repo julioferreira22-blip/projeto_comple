@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#2563eb">
+  <title>MinhaGrade & Provas</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>MinhaGrade</h1>
+    <p>Organizador Escolar Offline</p>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab-btn active" data-tab="provas">Provas & Tarefas</button>
+    <button class="tab-btn" data-tab="grade">Grade Horária</button>
+    <button class="tab-btn" data-tab="notas">Médias</button>
+  </nav>
+
+  <main>
+    <!-- ABA 1: PROVAS E TAREFAS -->
+    <section id="provas" class="tab-content active">
+      <div class="card">
+        <h2>Nova Prova ou Tarefa</h2>
+        <form id="form-tarefa">
+          <input type="text" id="tarefa-titulo" placeholder="Ex: Prova de Matemática (Funções)" required>
+          <div class="row">
+            <input type="text" id="tarefa-materia" placeholder="Matéria" required>
+            <input type="date" id="tarefa-data" required>
+          </div>
+          <button type="submit" class="btn-primary">Adicionar</button>
+        </form>
+      </div>
+      <div id="lista-tarefas" class="lista"></div>
+    </section>
+
+    <!-- ABA 2: GRADE HORÁRIA -->
+    <section id="grade" class="tab-content">
+      <div class="card">
+        <h2>Adicionar Aula na Grade</h2>
+        <form id="form-aula">
+          <div class="row">
+            <select id="aula-dia" required>
+              <option value="Segunda">Segunda-feira</option>
+              <option value="Terça">Terça-feira</option>
+              <option value="Quarta">Quarta-feira</option>
+              <option value="Quinta">Quinta-feira</option>
+              <option value="Sexta">Sexta-feira</option>
+            </select>
+            <input type="time" id="aula-hora" required>
+          </div>
+          <div class="row">
+            <input type="text" id="aula-materia" placeholder="Matéria (Ex: História)" required>
+            <input type="text" id="aula-prof" placeholder="Professor(a)">
+          </div>
+          <button type="submit" class="btn-primary">Salvar Horário</button>
+        </form>
+      </div>
+      <div id="lista-grade" class="lista"></div>
+    </section>
+
+    <!-- ABA 3: CALCULADORA DE MÉDIAS -->
+    <section id="notas" class="tab-content">
+      <div class="card">
+        <h2>Simulador de Notas (Média: 6,0)</h2>
+        <form id="form-nota">
+          <input type="text" id="nota-materia" placeholder="Nome da Matéria" required>
+          <div class="row">
+            <input type="number" id="nota-1" step="0.1" min="0" max="10" placeholder="Nota 1" required>
+            <input type="number" id="nota-2" step="0.1" min="0" max="10" placeholder="Nota 2">
+            <input type="number" id="nota-3" step="0.1" min="0" max="10" placeholder="Nota 3">
+          </div>
+          <button type="submit" class="btn-primary">Calcular & Salvar</button>
+        </form>
+      </div>
+      <div id="lista-notas" class="lista"></div>
+    </section>
+  </main>
+
+  <footer>
+    <button id="btn-exportar" class="btn-sec">Exportar Backup (.json)</button>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
